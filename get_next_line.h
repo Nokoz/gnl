@@ -6,7 +6,7 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:09:42 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/04/26 10:02:26 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/02 11:04:56 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
+int		ft_new_line(char *str)
 #endif
