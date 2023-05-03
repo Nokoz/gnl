@@ -6,7 +6,7 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:06:09 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/03 14:09:52 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:10:17 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 int	ft_is_line(char *str)
 {
-printf("la\n");
 	int	i;
 
-	i = -1;
-	while (str[i++] != '\n')
-		if (str[i] == '\0')
-		{
-			return (0);
-		}
-printf("i = %d\n", i);
-	return (i);
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+//printf("i = %d\n", i);
+		if (str[i] == '\n')
+			return (i + 1);
+		i++;
+	}
+	return (0);
 }
 
 char	*get_next_line(int fd)
@@ -35,6 +37,8 @@ char	*get_next_line(int fd)
 	int			i;
 	int			len_line;
 
+	if (fd == -1)
+		return (0);
 	i = 0;
 	len_line = 0;
 	if (!stake)
@@ -47,14 +51,18 @@ char	*get_next_line(int fd)
 	while (len_line == 0)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
+//printf("buff = %s\n", buff);
+sleep(1);
+//printf("ici");
 		if (i == -1 || (i == 0 && !stake))
 			return ("NULL");
-//printf("buff = %s\n", buff);
 		stake = ft_strjoin(stake, buff);
 //printf("stake = %s\n", stake);
 		len_line = ft_is_line(stake);
 	}
 	ret = ft_create_line(stake, len_line);
+	free(stake);
+	stake = ft_strsub(stake, ft_strlen(ret), BUFFER_SIZE);
 	return (ret);
 }
 
@@ -65,12 +73,10 @@ char	*ft_create_line(char *stake, int len_line)
 
 	i = 0;
 	ret = ft_strnew(len_line);
-	while (i <= len_line)
+	while (i < len_line)
 	{
 		ret[i] = stake[i];
 		i++;
 	}
-	free(stake);
-	stake = ft_strsub(stake, len_line, BUFFER_SIZE);
 	return (ret);
 }

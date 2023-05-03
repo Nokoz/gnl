@@ -6,7 +6,7 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:14:29 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/03 14:11:49 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:46:25 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	len_s1 = ft_strlen(s1);
 	str = ft_strnew(len_s1 + ft_strlen(s2));
-//printf("join\n");
 	if (str != NULL)
 	{
 		i = 0;
@@ -83,8 +82,21 @@ size_t	ft_strlen(char *s)
 	if (!s)
 		return (0);
 	i = 0;
-//printf("here\n");
 	while (s[i])
 		i++;
 	return (i);
+}
+
+void	*ft_memchr(void *s, int c, size_t n)
+{
+	unsigned char	*p;
+
+	p = (unsigned char *)s;
+	while (n--)
+	{
+		if (*p == (unsigned char) c)
+			return ((void *)p);
+		p++;
+	}
+	return (0);
 }

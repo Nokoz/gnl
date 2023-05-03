@@ -6,7 +6,7 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:49:58 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/03 14:10:02 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:59:24 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(void)
 	line = get_next_line(fd);
 	while (i < 5)
 	{
-		printf("new line = %s\n", line);
+		printf("	new line = %s", line);
 		line = get_next_line(fd);
 		i++;
 	}
