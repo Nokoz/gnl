@@ -1,0 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/25 18:06:09 by gvardaki          #+#    #+#             */
+/*   Updated: 2023/05/06 14:58:21 by gvardaki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+int	ft_is_line(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (i + 1);
+		i++;
+	}
+	return (0);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stake;
+	char		*ret;
+	char		*buff;
+	int			i;
+	int			len_line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+	i = 0;
+	len_line = 0;
+	buff = ft_strnew(BUFFER_SIZE);
+	while (len_line == 0)
+	{
+		i = read(fd, buff, BUFFER_SIZE);
+		if (i == -1)
+			return (NULL);
+		if (i == 0)
+			break ;
+		stake = ft_strjoin(stake, buff);
+		len_line = ft_is_line(stake);
+	}
+	free(buff);
+	ret = ft_create_line(stake, len_line);
+	stake = ft_strsub(stake, ft_strlen(ret), BUFFER_SIZE);
+	if (!stake)
+		return (NULL);
+	return (ret);
+}
+
+char	*ft_create_line(char *stake, int len_line)
+{
+	char	*ret;
+	int		i;
+
+	i = 0;
+	ret = ft_strnew(len_line);
+	while (i < len_line)
+	{
+		ret[i] = stake[i];
+		i++;
+	}
+	return (ret);
+}

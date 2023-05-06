@@ -3,80 +3,109 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gvardaki <gvardaki@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/25 18:06:09 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/03 17:10:17 by gvardaki         ###   ########.fr       */
+/*   Created: 2023/05/06 15:15:30 by gvardaki          #+#    #+#             */
+/*   Updated: 2023/05/06 20:06:13 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_is_line(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i])
-	{
-//printf("i = %d\n", i);
-		if (str[i] == '\n')
-			return (i + 1);
-		i++;
-	}
-	return (0);
-}
-
 char	*get_next_line(int fd)
 {
 	static char	*stake;
-	char		*ret;
-	char		*buff;
-	int			i;
-	int			len_line;
+	char		*line;
 
-	if (fd == -1)
-		return (0);
-	i = 0;
-	len_line = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+	stake = ft_read(fd, stake);
 	if (!stake)
-	{
-		stake = malloc(BUFFER_SIZE);
-		if (!stake)
-			return (0);
-	}
-	buff = ft_strnew(BUFFER_SIZE);
-	while (len_line == 0)
-	{
-		i = read(fd, buff, BUFFER_SIZE);
-//printf("buff = %s\n", buff);
-sleep(1);
-//printf("ici");
-		if (i == -1 || (i == 0 && !stake))
-			return ("NULL");
-		stake = ft_strjoin(stake, buff);
-//printf("stake = %s\n", stake);
-		len_line = ft_is_line(stake);
-	}
-	ret = ft_create_line(stake, len_line);
-	free(stake);
-	stake = ft_strsub(stake, ft_strlen(ret), BUFFER_SIZE);
-	return (ret);
+		return (NULL);
+	line = ft_line(stake);
+	stake = ft_next(stake);
+	return (line);
 }
 
-char	*ft_create_line(char *stake, int len_line)
+char	*ft_read(int fd, char *stake)
 {
-	char	*ret;
+	char	*buffer;
+	int		read_value;
+
+	if (!stake)
+	{
+		stake = ft_strnew(1);
+		if (!stake)
+			return (NULL);
+	}
+	buffer = ft_strnew(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	read_value = 1;
+	while (read_value > 0)
+	{
+		read_value = read(fd, buffer, BUFFER_SIZE);
+		if (read_value == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		buffer[read_value] = '\0';
+		stake = ft_join(stake, buffer);
+		if (ft_strchr(buffer, '\n'))
+			break ;
+	}
+	free(buffer);
+	return (stake);
+}
+
+char	*ft_join(char *stake, char *buff)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin(stake, buff);
+	free(stake);
+	return (tmp);
+}
+
+char	*ft_line(char *stake)
+{
+	char	*new_line;
 	int		i;
 
 	i = 0;
-	ret = ft_strnew(len_line);
-	while (i < len_line)
+	if (!stake[i])
+		return (NULL);
+	while (stake[i] && stake[i] != '\n')
+		i++;
+	new_line = ft_strnew(i + 2);
+	i = 0;
+	while (stake[i] && stake[i] != '\n')
 	{
-		ret[i] = stake[i];
+		new_line[i] = stake[i];
 		i++;
 	}
-	return (ret);
+	if (stake[i] && stake[i] == '\n')
+		new_line[i] = '\n';
+	return (new_line);
+}
+
+char	*ft_next(char *stake)
+{
+	char	*new_stake;
+	int		i;
+
+	i = 0;
+	while (stake[i] && stake[i] != '\n')
+		i++;
+	if (!stake[i])
+	{
+		free(stake);
+		return (NULL);
+	}
+	new_stake = ft_substr(stake, i + 1, ft_strlen(stake));
+	if (!new_stake)
+		return (NULL);
+	free(stake);
+	return (new_stake);
 }

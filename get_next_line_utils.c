@@ -6,13 +6,13 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:14:29 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/03 16:46:25 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/06 20:01:27 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strsub(char *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*new_str;
 	size_t	i;
@@ -52,7 +52,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		}
 		str[i + len_s1] = '\0';
 	}
-	free(s1);
 	return (str);
 }
 
@@ -63,15 +62,14 @@ char	*ft_strnew(size_t size)
 
 	i = 0;
 	str = (char *)malloc(sizeof(char) * (size + 1));
-	if (str)
+	if (!str)
+		return (NULL);
+	while (i < size)
 	{
-		while (i < size)
-		{
-			str[i] = '\0';
-			i++;
-		}
 		str[i] = '\0';
+		i++;
 	}
+	str[i] = '\0';
 	return (str);
 }
 
@@ -87,16 +85,15 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-void	*ft_memchr(void *s, int c, size_t n)
+char	*ft_strchr(const char *string, int chr)
 {
-	unsigned char	*p;
+	char	*str;
 
-	p = (unsigned char *)s;
-	while (n--)
-	{
-		if (*p == (unsigned char) c)
-			return ((void *)p);
-		p++;
-	}
-	return (0);
+	str = (char *)string;
+	while (*str != chr && *str != 0)
+		str++;
+	if (*str == chr)
+		return (str);
+	else
+		return (NULL);
 }
