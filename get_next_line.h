@@ -6,7 +6,7 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:09:42 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/06 18:40:39 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:04:03 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
+# define BUFFER_SIZE 20
 # endif
 
 #include <stdio.h>

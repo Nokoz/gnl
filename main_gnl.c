@@ -6,7 +6,7 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:49:58 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/03 16:59:24 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:26:24 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
 int	main(void)
 {
 	int		fd;
-	int		i = 0;
 	char	*line;
 
 	fd = open("text.txt", O_RDONLY);
 	line = get_next_line(fd);
-	while (i < 5)
+	while (1)
 	{
 		printf("	new line = %s", line);
 		line = get_next_line(fd);
-		i++;
+		if (line == NULL)
+			break ;
 	}
 	close(fd);
 	return (0);

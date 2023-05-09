@@ -6,7 +6,7 @@
 /*   By: gvardaki <gvardaki@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:15:30 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/05/06 20:06:13 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/05/08 16:12:39 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ char	*get_next_line(int fd)
 		return (NULL);
 	stake = ft_read(fd, stake);
 	if (!stake)
+	{
+//		free(stake);
 		return (NULL);
+	}
 	line = ft_line(stake);
 	stake = ft_next(stake);
 	return (line);
@@ -32,12 +35,6 @@ char	*ft_read(int fd, char *stake)
 	char	*buffer;
 	int		read_value;
 
-	if (!stake)
-	{
-		stake = ft_strnew(1);
-		if (!stake)
-			return (NULL);
-	}
 	buffer = ft_strnew(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
@@ -47,7 +44,7 @@ char	*ft_read(int fd, char *stake)
 		read_value = read(fd, buffer, BUFFER_SIZE);
 		if (read_value == -1)
 		{
-			free(buffer);
+			//free(buffer);
 			return (NULL);
 		}
 		buffer[read_value] = '\0';
@@ -61,11 +58,11 @@ char	*ft_read(int fd, char *stake)
 
 char	*ft_join(char *stake, char *buff)
 {
-	char	*tmp;
+	char	*joined;
 
-	tmp = ft_strjoin(stake, buff);
+	joined = ft_strjoin(stake, buff);
 	free(stake);
-	return (tmp);
+	return (joined);
 }
 
 char	*ft_line(char *stake)
@@ -78,7 +75,7 @@ char	*ft_line(char *stake)
 		return (NULL);
 	while (stake[i] && stake[i] != '\n')
 		i++;
-	new_line = ft_strnew(i + 2);
+	new_line = ft_strnew(i + 1);
 	i = 0;
 	while (stake[i] && stake[i] != '\n')
 	{
@@ -103,9 +100,12 @@ char	*ft_next(char *stake)
 		free(stake);
 		return (NULL);
 	}
-	new_stake = ft_substr(stake, i + 1, ft_strlen(stake));
+	new_stake = ft_substr(stake, i + 1, ft_strlen(stake) - i);
 	if (!new_stake)
+	{
+		free(stake);
 		return (NULL);
+	}
 	free(stake);
 	return (new_stake);
 }
